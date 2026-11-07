@@ -1,0 +1,10 @@
+streamlit
+fastapi
+uvicorn
+pandas
+PyMuPDF
+scikit-learn
+sentence-transformers
+chromadb
+pydantic
+python-multipart

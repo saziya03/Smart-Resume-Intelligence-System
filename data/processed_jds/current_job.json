@@ -1,0 +1,21 @@
+{
+    "job_id": "current_job",
+    "job_description": "Job Title: NLP Engineering\n\nWe are looking for an NLP Engineer (Fresher / Entry Level) to join our AI team.\n\nResponsibilities:\n- Develop and fine-tune NLP models for text classification, sentiment analysis, and named entity recognition\n- Build NLP pipelines using Python, BERT, and Hugging Face Transformers\n- Work with Large Language Models, RAG, and LangChain for Generative AI applications\n- Clean and preprocess text data using Pandas, NumPy, and Scikit-Learn\n- Build and deploy ML models and APIs using FastAPI and Streamlit\n- Work with SQL and MySQL databases\n- Use Git and GitHub for version control\n\nRequired Skills:\nPython, SQL, MySQL, Natural Language Processing, NLP, Machine Learning, BERT, Hugging Face, Scikit-Learn, Pandas, NumPy, Git, GitHub, Data Analysis, Statistics\n\nGood to Have:\nLangChain, RAG, Generative AI, AI, FastAPI, Streamlit, Docker, Power BI, Excel\n\nQualification: B.Sc / B.Tech in Computer Science, Mathematics or related field\nExperience: 0-1 Year",
+    "required_skills": [
+        "Python",
+        "SQL",
+        "MySQL",
+        "Machine Learning",
+        "Natural Language Processing",
+        "NLP",
+        "Pandas",
+        "NumPy",
+        "Scikit-learn",
+        "BERT",
+        "Hugging Face",
+        "Transformers",
+        "Git",
+        "Docker",
+        "FastAPI"
+    ]
+}

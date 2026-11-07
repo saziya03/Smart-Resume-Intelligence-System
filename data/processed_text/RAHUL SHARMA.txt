@@ -1,0 +1,24 @@
+RAHUL SHARMA 
+ 
+Email: rahul@example.com 
+Phone: 9876543210 
+ 
+CAREER OBJECTIVE 
+Aspiring NLP Engineer with knowledge of Python, 
+Machine Learning and Natural Language Processing. 
+ 
+TECHNICAL SKILLS 
+Python, SQL, Machine Learning, NLP, 
+Pandas, NumPy, BERT, Hugging Face. 
+ 
+EDUCATION 
+Master of Computer Applications (MCA) 
+Bachelor of Computer Applications (BCA) 
+ 
+PROJECTS 
+1. Sentiment Analysis using NLP 
+2. Resume Screening System 
+3. Text Classification using Machine Learning 
+ 
+EXPERIENCE 
+Fresher 

@@ -1,0 +1,21 @@
+Job Title: NLP Engineering
+
+We are looking for an NLP Engineer (Fresher / Entry Level) to join our AI team.
+
+Responsibilities:
+- Develop and fine-tune NLP models for text classification, sentiment analysis, and named entity recognition
+- Build NLP pipelines using Python, BERT, and Hugging Face Transformers
+- Work with Large Language Models, RAG, and LangChain for Generative AI applications
+- Clean and preprocess text data using Pandas, NumPy, and Scikit-Learn
+- Build and deploy ML models and APIs using FastAPI and Streamlit
+- Work with SQL and MySQL databases
+- Use Git and GitHub for version control
+
+Required Skills:
+Python, SQL, MySQL, Natural Language Processing, NLP, Machine Learning, BERT, Hugging Face, Scikit-Learn, Pandas, NumPy, Git, GitHub, Data Analysis, Statistics
+
+Good to Have:
+LangChain, RAG, Generative AI, AI, FastAPI, Streamlit, Docker, Power BI, Excel
+
+Qualification: B.Sc / B.Tech in Computer Science, Mathematics or related field
+Experience: 0-1 Year

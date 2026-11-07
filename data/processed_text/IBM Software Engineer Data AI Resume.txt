@@ -1,0 +1,58 @@
+DEEPAK YADAV
+📍 Lucknow / Mumbai
+📧 yadavdeepak23805@gmail.com
+📱 +91 25704470
+🔗 linkedin.com/in/deepak-yadav-8a75b12a1
+PROFESSIONAL PROFILE
+Enthusiastic and detail-oriented Computer Science Graduate with a strong foundation in Python, SQL, AI/ML models,
+and Data Engineering fundamentals. Hands-on experience developing LLM applications using LangChain, RAG
+pipelines, and Vector DBs alongside building robust ETL pipelines. Eager to contribute to enterprise-grade Data & AI
+products at IBM Bengaluru through strong problem-solving and software development skills.
+EDUCATION
+Master of Computer Application (MCA)
+Major in Software & Data Engineering | CGPA: 8.05/10.0
+2024 – 2026
+8.05 / 10
+MCA CGPA with Specialization in Data &
+AI
+3+ Projects
+Production-Ready GenAI & Data
+Engineering Tools
+Top 5%
+National Level AI/ML Hackathon Finalist
+TECHNICAL SKILLS
+Programming Languages: Python (Proficient), SQL, Java,
+C++
+AI & Generative AI: LLMs, LangChain, RAG Architecture,
+OpenAI API, Hugging Face
+Data Engineering & DBs: PySpark, PostgreSQL, MySQL,
+Vector DBs (ChromaDB, FAISS)
+ML & Data Science: Scikit-Learn, Pandas, NumPy,
+Matplotlib, Data Wrangling
+Developer Tools: Git, GitHub, Docker, REST APIs, FastAPI,
+Airflow (Basic)
+Core Concepts: Data Structures & Algorithms, OOP,
+Database Systems (DBMS), OS
+ACADEMIC & CAPSTONE PROJECTS
+Multi-Document RAG Q&A Assistant with LLM
+Python, LangChain, ChromaDB, Streamlit
+Built an end-to-end Retrieval-Augmented Generation (RAG) agent that parses complex PDF documents and generates
+context-aware answers using OpenAI LLM endpoints.
+Implemented vector embeddings with ChromaDB and semantic search, achieving sub-second retrieval latency for queries.
+Real-Time Data Pipeline & Analytics Dashboard
+Python, PySpark, PostgreSQL, SQL, Docker
+Designed an automated ETL data pipeline using PySpark and PostgreSQL to aggregate and clean over 100k daily mock
+transactions.
+Engineered optimized SQL queries and database indexes to accelerate analytical reporting response times by 35%.
+INTERNSHIP EXPERIENCE
+Software / Data Engineering Intern | Innovate Tech Labs
+Bengaluru, KA | Jun 2025 – Aug 2025
+Developed backend RESTful microservices using FastAPI and Python for real-time model inference.
+Wrote and executed automated unit tests and benchmarked SQL database queries for enhanced pipeline stability.
+Collaborated in an Agile team setup with daily standups, code reviews, and Git version control.
+CERTIFICATIONS & ACHIEVEMENTS
+IBM Certified Data Science Professional & DeepLearning.AI Generative AI with LLMs
+Hackathon Finalist: Ranked in Top 5% among 200+ teams in National AI Innovation Challenge (2025).
+Problem Solving: Solved 250+ DSA problems across LeetCode and HackerRank.
+Deepak Yadav — Fresher Resume tailored for IBM Bengaluru
+Page 1 of 1
