@@ -29,7 +29,7 @@ if str(BASE_DIR) not in sys.path:
     sys.path.insert(0, str(BASE_DIR))
 
 try:
-    from Src.rag_engine import (
+    from src.rag_engine import (
         generate_answer as rag_generate_answer,
         store_resumes,
     )
