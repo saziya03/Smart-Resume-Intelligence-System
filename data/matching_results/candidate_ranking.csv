@@ -1,7 +1,7 @@
 candidate,semantic_score,skill_score,final_score,missing_skills
-Saziya NLP,70.21,66.67,69.14,"bert, docker, fastapi, hugging face, transformers"
-IBM Software Engineer Data AI Resume,65.62,66.67,65.93,"bert, machine learning, natural language processing, nlp, transformers"
-SE Data AI Resume,65.62,66.67,65.93,"bert, machine learning, natural language processing, nlp, transformers"
-RAHUL SHARMA,67.55,60.0,65.29,"docker, fastapi, git, mysql, scikit-learn, transformers"
-Saziya Alvi,52.84,40.0,48.99,"bert, docker, fastapi, hugging face, machine learning, natural language processing, nlp, scikit-learn, transformers"
-sample_resume_fixed,51.42,40.0,48.0,"bert, docker, fastapi, hugging face, machine learning, natural language processing, nlp, scikit-learn, transformers"
+Saziya NLP,68.77,43.75,61.26,"deep learning, hugging face, lemmatization, pytorch, stemming, tensorflow, text preprocessing, tokenization, transformers"
+RAHUL SHARMA,67.31,43.75,60.24,"deep learning, lemmatization, pytorch, scikit-learn, stemming, tensorflow, text preprocessing, tokenization, transformers"
+IBM Software Engineer Data AI Resume,60.79,37.5,53.8,"deep learning, lemmatization, machine learning, nlp, pytorch, stemming, tensorflow, text preprocessing, tokenization, transformers"
+SE Data AI Resume,60.79,37.5,53.8,"deep learning, lemmatization, machine learning, nlp, pytorch, stemming, tensorflow, text preprocessing, tokenization, transformers"
+Saziya Alvi,43.37,25.0,37.86,"deep learning, hugging face, lemmatization, machine learning, nlp, pytorch, scikit-learn, stemming, tensorflow, text preprocessing, tokenization, transformers"
+sample_resume_fixed,41.91,25.0,36.84,"deep learning, hugging face, lemmatization, machine learning, nlp, pytorch, scikit-learn, stemming, tensorflow, text preprocessing, tokenization, transformers"
