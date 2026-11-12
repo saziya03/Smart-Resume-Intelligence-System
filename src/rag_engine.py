@@ -194,44 +194,62 @@ def search_resumes(question, top_k=3):
         print("Content:", item["content"][:500])
 
 
+
 # ==========================================
 # 8. GENERATE ANSWERS USING OLLAMA
 # ==========================================
 
-def generate_answer(question):
+def generate_answer(question, chat_history=None):
 
+    # Retrieve relevant resume information
     retrieved_data = retrieve_context(question, top_k=5)
 
-    if not retrieved_data:
-        print("No relevant resume information found.")
-        return
-
+    # Prepare resume context
     context = ""
 
     for item in retrieved_data:
-
         context += (
             f"\nResume Source: {item['source']}\n"
             f"Resume Content: {item['content']}\n"
         )
 
+    # Prepare previous conversation
+    history = ""
+
+    if chat_history:
+        for message in chat_history[-6:]:
+            role = message.get("role", "user")
+            content = message.get("content", "")
+
+            history += f"\n{role}: {content}\n"
+
+    # Create prompt
     prompt = f"""
-You are a professional Resume Analysis Assistant.
+You are a professional AI Recruiter Assistant.
 
-Answer the recruiter's question using ONLY the
-provided resume information.
+Your responsibilities:
+1. Answer questions about candidates using resume information.
+2. Explain candidate skills, education, projects and experience.
+3. Compare candidates when asked.
+4. Explain general technical topics like NLP, Python, SQL,
+   Machine Learning, RAG and Generative AI.
+5. Never invent candidate information.
+6. If candidate information is unavailable, clearly mention it.
+7. Give simple, detailed and understandable answers.
+8. Use previous conversation when relevant.
 
-Instructions:
-1. Do not invent candidate details.
-2. Mention the resume filename as the source.
-3. If information is unavailable, clearly say so.
-4. Keep the answer simple and understandable.
-5. Distinguish between explicit evidence and uncertain information.
+IMPORTANT:
+- For candidate-related questions, use resume information.
+- For general technical questions, use your general knowledge.
+- Do not confuse general knowledge with candidate qualifications.
 
-Resume Information:
-{context}
+RESUME INFORMATION:
+{context if context else "No relevant resume information retrieved."}
 
-Recruiter's Question:
+PREVIOUS CHAT HISTORY:
+{history if history else "No previous conversation."}
+
+CURRENT QUESTION:
 {question}
 
 Answer:
@@ -251,21 +269,21 @@ Answer:
             ]
         )
 
-        print("\n========== AI GENERATED ANSWER ==========")
+        answer = response["message"]["content"]
 
-        print(response["message"]["content"])
+        print("\n========== AI GENERATED ANSWER ==========")
+        print(answer)
+
+        # Return answer to Streamlit
+        return answer
 
     except Exception as error:
 
-        print("\nOllama connection error!")
+        error_message = f"Ollama connection error: {error}"
 
-        print("Reason:", error)
+        print(error_message)
 
-        print(
-            "Make sure Ollama is installed, "
-            "running, and qwen2.5:3b is downloaded."
-        )
-
+        return error_message
 
 # ==========================================
 # 9. MAIN PROGRAM

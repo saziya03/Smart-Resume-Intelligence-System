@@ -18,7 +18,7 @@ from pathlib import Path
 #   data/
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SRC_DIR = BASE_DIR / "Src"
+SRC_DIR = BASE_DIR / "src"
 
 RESUME_DIR = BASE_DIR / "data" / "resumes"
 JD_DIR = BASE_DIR / "data" / "job_descriptions"
@@ -51,7 +51,7 @@ def generate_answer(question):
         return (
             "The RAG engine could not be imported.\n\n"
             f"Import error: {RAG_IMPORT_ERROR}\n\n"
-            "Please check the Src folder name and rag_engine.py file."
+            "Please check the src folder name and rag_engine.py file."
         )
 
     # The current question is already saved in chat_history.

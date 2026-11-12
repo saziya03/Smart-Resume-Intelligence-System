@@ -1,22 +1,18 @@
 {
     "job_id": "current_job",
-    "job_description": "Job Title: NLP Engineer\n\nMain Responsibilities\nText preprocessing and cleaning\nBuilding chatbots and virtual assistants\nSentiment analysis\nText classification\nMachine translation\nQuestion-answering systems\nNamed Entity Recognition (NER)\nWorking with Large Language Models (LLMs) like GPT, Llama, and Mistral\nSkills Required\nPython\nNLP Libraries: NLTK, spaCy, Gensim\nMachine Learning: Scikit-learn\nDeep Learning: TensorFlow or PyTorch\nTransformers: Hugging Face\nSQL\nBasic understanding of Statistics and Mathematics\nLearning Roadmap\nPython\nPandas, NumPy, Matplotlib\nMachine Learning (Scikit-learn)\nNLP Basics (Tokenization, Stemming, Lemmatization)\nNLP Projects\nDeep Learning for NLP\nTransformers & Hugging Face\nLLM Applications and RAG\nProjects for Your Portfolio\nSentiment Analysis\nSpam Email Detection\nText Summarizer\nQuestion Answering Bot\nResume Screening System\nChatbot using LLMs\nRAG-based Document Assistant",
+    "job_description": "Job Title: Nlp engineering\n\nJob Title: NLP Engineer\n\nWe are looking for an NLP Engineer with experience in Python, Machine Learning, and Natural Language Processing to build intelligent language-based solutions. The candidate will develop, fine-tune, and deploy NLP models for tasks such as text classification, sentiment analysis, information extraction, and conversational AI.\n\nKey Skills:\n\nPython\nNLP (NLTK, spaCy, Hugging Face)\nMachine Learning & Deep Learning\nScikit-learn, TensorFlow, or PyTorch\nTransformers (BERT, GPT, etc.)\nText Processing & Feature Engineering\nSQL and Data Handling\n\nResponsibilities:\n\nDevelop and optimize NLP models and pipelines.\nFine-tune transformer-based models.\nBuild and deploy AI-powered applications.\nEvaluate and improve model performance.\nCollaborate with cross-functional teams to deliver NLP solutions.\n\nPreferred:\n\nExperience with LLMs, RAG, ChromaDB/FAISS, and Vector Embeddings.\nKnowledge of model deployment and MLOps.",
     "required_skills": [
         "Python",
         "SQL",
         "Machine Learning",
         "Deep Learning",
+        "Natural Language Processing",
         "NLP",
-        "Pandas",
-        "NumPy",
         "Scikit-learn",
         "TensorFlow",
         "PyTorch",
+        "BERT",
         "Hugging Face",
-        "Transformers",
-        "Text Preprocessing",
-        "Tokenization",
-        "Stemming",
-        "Lemmatization"
+        "Transformers"
     ]
 }

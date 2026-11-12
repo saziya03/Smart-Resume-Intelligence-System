@@ -1,36 +1,28 @@
+Job Title: Nlp engineering
+
 Job Title: NLP Engineer
 
-Main Responsibilities
-Text preprocessing and cleaning
-Building chatbots and virtual assistants
-Sentiment analysis
-Text classification
-Machine translation
-Question-answering systems
-Named Entity Recognition (NER)
-Working with Large Language Models (LLMs) like GPT, Llama, and Mistral
-Skills Required
+We are looking for an NLP Engineer with experience in Python, Machine Learning, and Natural Language Processing to build intelligent language-based solutions. The candidate will develop, fine-tune, and deploy NLP models for tasks such as text classification, sentiment analysis, information extraction, and conversational AI.
+
+Key Skills:
+
 Python
-NLP Libraries: NLTK, spaCy, Gensim
-Machine Learning: Scikit-learn
-Deep Learning: TensorFlow or PyTorch
-Transformers: Hugging Face
-SQL
-Basic understanding of Statistics and Mathematics
-Learning Roadmap
-Python
-Pandas, NumPy, Matplotlib
-Machine Learning (Scikit-learn)
-NLP Basics (Tokenization, Stemming, Lemmatization)
-NLP Projects
-Deep Learning for NLP
-Transformers & Hugging Face
-LLM Applications and RAG
-Projects for Your Portfolio
-Sentiment Analysis
-Spam Email Detection
-Text Summarizer
-Question Answering Bot
-Resume Screening System
-Chatbot using LLMs
-RAG-based Document Assistant
+NLP (NLTK, spaCy, Hugging Face)
+Machine Learning & Deep Learning
+Scikit-learn, TensorFlow, or PyTorch
+Transformers (BERT, GPT, etc.)
+Text Processing & Feature Engineering
+SQL and Data Handling
+
+Responsibilities:
+
+Develop and optimize NLP models and pipelines.
+Fine-tune transformer-based models.
+Build and deploy AI-powered applications.
+Evaluate and improve model performance.
+Collaborate with cross-functional teams to deliver NLP solutions.
+
+Preferred:
+
+Experience with LLMs, RAG, ChromaDB/FAISS, and Vector Embeddings.
+Knowledge of model deployment and MLOps.
