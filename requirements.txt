@@ -9,3 +9,6 @@ chromadb
 pydantic
 python-multipart
 ollama
+spacy
+nltk
+skelearn

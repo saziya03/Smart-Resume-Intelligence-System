@@ -6,29 +6,31 @@ from sentence_transformers import SentenceTransformer
 from pathlib import Path
 
 
-# ==========================================
+# =========================================================
 # 1. PROJECT PATHS
-# ==========================================
+# =========================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 RESUME_DIR = BASE_DIR / "data" / "processed_text"
-
 VECTOR_DIR = BASE_DIR / "models" / "resume_vector_db"
 
+RESUME_DIR.mkdir(parents=True, exist_ok=True)
+VECTOR_DIR.mkdir(parents=True, exist_ok=True)
 
-# ==========================================
+
+# =========================================================
 # 2. LOAD EMBEDDING MODEL
-# ==========================================
+# =========================================================
 
 print("Loading Sentence Transformer model...")
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
-# ==========================================
+# =========================================================
 # 3. CONNECT TO CHROMADB
-# ==========================================
+# =========================================================
 
 client = chromadb.PersistentClient(
     path=str(VECTOR_DIR)
@@ -39,12 +41,17 @@ collection = client.get_or_create_collection(
     metadata={"hnsw:space": "cosine"}
 )
 
+print("ChromaDB connected successfully!")
 
-# ==========================================
+
+# =========================================================
 # 4. TEXT CHUNKING
-# ==========================================
+# =========================================================
 
 def create_chunks(text, chunk_size=1000, overlap=150):
+
+    if overlap >= chunk_size:
+        raise ValueError("Overlap must be smaller than chunk size.")
 
     chunks = []
 
@@ -64,9 +71,9 @@ def create_chunks(text, chunk_size=1000, overlap=150):
     return chunks
 
 
-# ==========================================
+# =========================================================
 # 5. STORE RESUMES IN CHROMADB
-# ==========================================
+# =========================================================
 
 def store_resumes():
 
@@ -74,7 +81,7 @@ def store_resumes():
 
     if not resume_files:
         print("No processed resumes found!")
-        return
+        return 0
 
     total_chunks = 0
 
@@ -82,44 +89,52 @@ def store_resumes():
 
         print(f"\nProcessing: {resume_file.name}")
 
-        text = resume_file.read_text(
-            encoding="utf-8"
-        )
+        try:
 
-        chunks = create_chunks(text)
+            text = resume_file.read_text(
+                encoding="utf-8"
+            )
 
-        if not chunks:
-            print("No readable text found!")
-            continue
+            chunks = create_chunks(text)
 
-        embeddings = model.encode(
-            chunks,
-            normalize_embeddings=True
-        ).tolist()
+            if not chunks:
+                print("No readable text found!")
+                continue
 
-        ids = [
-            f"{resume_file.stem}_chunk_{i}"
-            for i in range(len(chunks))
-        ]
+            embeddings = model.encode(
+                chunks,
+                normalize_embeddings=True
+            ).tolist()
 
-        metadatas = [
-            {
-                "source": resume_file.name,
-                "chunk_number": i
-            }
-            for i in range(len(chunks))
-        ]
+            ids = [
+                f"{resume_file.stem}_chunk_{i}"
+                for i in range(len(chunks))
+            ]
 
-        collection.upsert(
-            ids=ids,
-            documents=chunks,
-            embeddings=embeddings,
-            metadatas=metadatas
-        )
+            metadatas = [
+                {
+                    "source": resume_file.name,
+                    "chunk_number": i
+                }
+                for i in range(len(chunks))
+            ]
 
-        total_chunks += len(chunks)
+            collection.upsert(
+                ids=ids,
+                documents=chunks,
+                embeddings=embeddings,
+                metadatas=metadatas
+            )
 
-        print("Chunks stored:", len(chunks))
+            total_chunks += len(chunks)
+
+            print("Chunks stored:", len(chunks))
+
+        except Exception as error:
+
+            print(
+                f"Error processing {resume_file.name}: {error}"
+            )
 
     print("\n========== RAG DATABASE REPORT ==========")
 
@@ -127,13 +142,17 @@ def store_resumes():
 
     print("Total database records:", collection.count())
 
+    return total_chunks
 
-# ==========================================
+
+# =========================================================
 # 6. RETRIEVE RELEVANT RESUME INFORMATION
-# ==========================================
+# =========================================================
 
-def retrieve_context(question, top_k=3):
-
+def retrieve_context(question, chat_history=None, top_k=5):
+    if chat_history is None:
+        chat_history = []
+    # Keep your existing RAG code below this line.
     if collection.count() == 0:
         return []
 
@@ -144,19 +163,31 @@ def retrieve_context(question, top_k=3):
 
     results = collection.query(
         query_embeddings=question_embedding,
-        n_results=min(top_k, collection.count())
+        n_results=min(top_k, collection.count()),
+        include=["documents", "metadatas", "distances"]
     )
 
     context = []
 
-    for i, document in enumerate(results["documents"][0]):
+    documents = results.get("documents") or [[]]
+    metadatas = results.get("metadatas") or [[]]
+    distances = results.get("distances") or [[]]
 
-        source = results["metadatas"][0][i]["source"]
+    if not documents or not documents[0]:
+        return []
 
-        distance = results["distances"][0][i]
+    for i, document in enumerate(documents[0]):
+
+        metadata = metadatas[0][i] or {}
+
+        distance = (
+            distances[0][i]
+            if distances and distances[0]
+            else None
+        )
 
         context.append({
-            "source": source,
+            "source": metadata.get("source", "Unknown"),
             "content": document,
             "distance": distance
         })
@@ -164,25 +195,31 @@ def retrieve_context(question, top_k=3):
     return context
 
 
-# ==========================================
+# =========================================================
 # 7. SEMANTIC SEARCH
-# ==========================================
+# =========================================================
 
-def search_resumes(question, top_k=3):
+def search_resumes(question, top_k=5):
 
-    retrieved_data = retrieve_context(question, top_k)
+    retrieved_data = retrieve_context(
+        question,
+        top_k=top_k
+    )
 
     if not retrieved_data:
-        print("No relevant resume information found.")
-        return
+        print("No resume information found.")
+        return []
 
     print("\n========== SEARCH RESULTS ==========")
 
     for i, item in enumerate(retrieved_data, start=1):
 
-        similarity = max(
-            0,
-            (1 - item["distance"]) * 100
+        distance = item["distance"]
+
+        similarity = (
+            max(0, (1 - distance) * 100)
+            if distance is not None
+            else 0
         )
 
         print(f"\nResult {i}")
@@ -193,72 +230,107 @@ def search_resumes(question, top_k=3):
 
         print("Content:", item["content"][:500])
 
+    return retrieved_data
 
 
-# ==========================================
+# =========================================================
 # 8. GENERATE ANSWERS USING OLLAMA
-# ==========================================
+# =========================================================
 
-def generate_answer(question, chat_history=None):
+def generate_answer(question, chat_history=None, top_k=5):
 
-    # Retrieve relevant resume information
-    retrieved_data = retrieve_context(question, top_k=5)
-
-    # Prepare resume context
-    context = ""
-
-    for item in retrieved_data:
-        context += (
-            f"\nResume Source: {item['source']}\n"
-            f"Resume Content: {item['content']}\n"
-        )
-
-    # Prepare previous conversation
-    history = ""
-
-    if chat_history:
-        for message in chat_history[-6:]:
-            role = message.get("role", "user")
-            content = message.get("content", "")
-
-            history += f"\n{role}: {content}\n"
-
-    # Create prompt
-    prompt = f"""
-You are a professional AI Recruiter Assistant.
-
-Your responsibilities:
-1. Answer questions about candidates using resume information.
-2. Explain candidate skills, education, projects and experience.
-3. Compare candidates when asked.
-4. Explain general technical topics like NLP, Python, SQL,
-   Machine Learning, RAG and Generative AI.
-5. Never invent candidate information.
-6. If candidate information is unavailable, clearly mention it.
-7. Give simple, detailed and understandable answers.
-8. Use previous conversation when relevant.
-
-IMPORTANT:
-- For candidate-related questions, use resume information.
-- For general technical questions, use your general knowledge.
-- Do not confuse general knowledge with candidate qualifications.
-
-RESUME INFORMATION:
-{context if context else "No relevant resume information retrieved."}
-
-PREVIOUS CHAT HISTORY:
-{history if history else "No previous conversation."}
-
-CURRENT QUESTION:
-{question}
-
-Answer:
-"""
-
-    print("\nGenerating AI answer...")
+    if not question or not question.strip():
+        return "Please enter a question."
 
     try:
 
+        # Retrieve relevant resume information
+        retrieved_data = retrieve_context(
+            question,
+            top_k=top_k
+        )
+
+        # Prepare resume context
+        context = ""
+
+        for item in retrieved_data:
+
+            context += (
+                f"\nResume Source: {item['source']}\n"
+                f"Resume Content: {item['content']}\n"
+            )
+
+        if not context:
+            context = "No relevant resume information found."
+
+        # Prepare conversation history
+        history = ""
+
+        if chat_history:
+
+            for message in chat_history[-10:]:
+
+                role = message.get("role", "user")
+                content = message.get("content", "")
+
+                if role in ["user", "assistant"] and content:
+                    history += f"\n{role}: {content}\n"
+
+        if not history:
+            history = "No previous conversation."
+
+        # Create prompt
+        prompt = f"""
+You are an intelligent AI Recruiter Assistant
+and a helpful technical learning assistant.
+
+YOUR RESPONSIBILITIES:
+
+1. Answer different questions asked by the user.
+2. Explain NLP, Machine Learning, Python, SQL,
+   Deep Learning, RAG and Generative AI.
+3. Answer resume-related questions using retrieved
+   candidate information.
+4. Explain candidate skills, education and projects.
+5. Compare candidates when requested.
+6. Explain technical concepts with examples.
+7. Use previous conversation when relevant.
+8. Give a fresh, relevant answer to every new question.
+9. Avoid repeating the same answer unnecessarily.
+10. Use simple and understandable English.
+
+IMPORTANT RULES:
+
+- For general technical questions, use your general
+  knowledge. Do not force irrelevant resume context
+  into the answer.
+- For candidate-related questions, use the supplied
+  resume information.
+- Never invent candidate qualifications or experience.
+- If candidate information is unavailable, say so.
+- Mention the resume filename when using candidate data.
+- If the user asks a follow-up question, understand
+  it using the previous conversation.
+- Answer the current question directly.
+
+RESUME INFORMATION:
+
+{context}
+
+PREVIOUS CONVERSATION:
+
+{history}
+
+CURRENT QUESTION:
+
+{question}
+
+Provide a clear and useful answer:
+"""
+
+        print("\nGenerating AI answer...")
+
+        # Call Ollama
         response = ollama.chat(
             model="qwen2.5:3b",
             messages=[
@@ -266,12 +338,19 @@ Answer:
                     "role": "user",
                     "content": prompt
                 }
-            ]
+            ],
+            options={
+                "temperature": 0.4
+            }
         )
 
-        answer = response["message"]["content"]
+        answer = response["message"]["content"].strip()
+
+        if not answer:
+            return "The AI model returned an empty answer."
 
         print("\n========== AI GENERATED ANSWER ==========")
+
         print(answer)
 
         # Return answer to Streamlit
@@ -279,15 +358,18 @@ Answer:
 
     except Exception as error:
 
-        error_message = f"Ollama connection error: {error}"
+        error_message = (
+            f"AI answer generation failed: {str(error)}"
+        )
 
         print(error_message)
 
         return error_message
 
-# ==========================================
+
+# =========================================================
 # 9. MAIN PROGRAM
-# ==========================================
+# =========================================================
 
 if __name__ == "__main__":
 
@@ -295,26 +377,28 @@ if __name__ == "__main__":
 
     print("----------------------------------")
 
-    # Store or update resume information
+    # Store resumes in ChromaDB
     store_resumes()
 
     print("\nRAG SYSTEM READY!")
 
-    print("Type 'search' to retrieve resume passages.")
+    print("Ask any question about resumes or technical topics.")
 
     print("Type 'exit' to close the system.")
 
     while True:
 
         question = input(
-            "\nAsk a question about resumes: "
+            "\nAsk a question: "
         ).strip()
 
         if question.lower() == "exit":
+
             print("RAG system closed.")
             break
 
         if not question:
+
             print("Please enter a question.")
             continue
 
@@ -324,9 +408,10 @@ if __name__ == "__main__":
 
             if search_question:
                 search_resumes(search_question)
-            else:
-                print("Please enter a search question.")
 
         else:
 
-            generate_answer(question)
+            answer = generate_answer(question)
+
+            print("\nAI Answer:")
+            print(answer)

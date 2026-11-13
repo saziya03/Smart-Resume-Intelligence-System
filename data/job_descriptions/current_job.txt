@@ -1,7 +1,6 @@
-Job Title: Nlp engineering
-
 Job Title: NLP Engineer
 
+Job Description:
 We are looking for an NLP Engineer with experience in Python, Machine Learning, and Natural Language Processing to build intelligent language-based solutions. The candidate will develop, fine-tune, and deploy NLP models for tasks such as text classification, sentiment analysis, information extraction, and conversational AI.
 
 Key Skills:
@@ -26,3 +25,4 @@ Preferred:
 
 Experience with LLMs, RAG, ChromaDB/FAISS, and Vector Embeddings.
 Knowledge of model deployment and MLOps.
+Keywords: Python, NLP, Machine Learning, Transformers, Hugging Face, BERT, PyTorch, TensorFlow, RAG, LLMs.

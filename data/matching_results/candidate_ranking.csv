@@ -1,7 +1,4 @@
 candidate,semantic_score,skill_score,final_score,missing_skills
-RAHUL SHARMA,68.18,58.33,65.23,"deep learning, pytorch, scikit-learn, tensorflow, transformers"
-Saziya NLP,65.91,50.0,61.13,"bert, deep learning, hugging face, pytorch, tensorflow, transformers"
-IBM Software Engineer Data AI Resume,58.68,33.33,51.08,"bert, deep learning, machine learning, natural language processing, nlp, pytorch, tensorflow, transformers"
-SE Data AI Resume,58.68,33.33,51.08,"bert, deep learning, machine learning, natural language processing, nlp, pytorch, tensorflow, transformers"
-Saziya Alvi,36.74,16.67,30.72,"bert, deep learning, hugging face, machine learning, natural language processing, nlp, pytorch, scikit-learn, tensorflow, transformers"
-sample_resume_fixed,35.96,16.67,30.18,"bert, deep learning, hugging face, machine learning, natural language processing, nlp, pytorch, scikit-learn, tensorflow, transformers"
+RAHUL SHARMA,64.31,58.33,62.52,"deep learning, pytorch, scikit-learn, tensorflow, transformers"
+Saziya NLP,63.34,50.0,59.34,"bert, deep learning, hugging face, pytorch, tensorflow, transformers"
+Saziya Alvi,36.25,16.67,30.38,"bert, deep learning, hugging face, machine learning, natural language processing, nlp, pytorch, scikit-learn, tensorflow, transformers"

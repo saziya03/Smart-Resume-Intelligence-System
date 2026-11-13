@@ -1,411 +1,537 @@
-import sys
+"""
+Smart Resume Intelligence System - Streamlit application
+
+Expected location:
+    Smart-Resume-Intelligence-System/app/streamlit_app.py
+
+Run from the project root:
+    streamlit run app/streamlit_app.py
+
+Expected project folders:
+    src/, data/resumes/, data/processed_text/,
+    data/job_descriptions/, data/matching_results/, models/
+"""
+from __future__ import annotations
+
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import subprocess
-import streamlit as st
-import pandas as pd
-
+import sys
 from pathlib import Path
+from typing import Any
+
+import pandas as pd
+import streamlit as st
 
 
-# =========================================================
+# ============================================================
 # 1. PROJECT PATHS
-# =========================================================
+# ============================================================
 
-# This assumes this file is inside the app/ folder.
-# Example:
-# Smart-Resume-Intelligence-System/
-#   app/streamlit_app.py
-#   Src/rag_engine.py
-#   data/
+APP_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = APP_DIR.parent
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-SRC_DIR = BASE_DIR / "src"
+SRC_DIR = PROJECT_ROOT / "src"
+RESUME_DIR = PROJECT_ROOT / "data" / "resumes"
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed_text"
+JOB_DESCRIPTION_DIR = PROJECT_ROOT / "data" / "job_descriptions"
+RESULT_DIR = PROJECT_ROOT / "data" / "matching_results"
 
-RESUME_DIR = BASE_DIR / "data" / "resumes"
-JD_DIR = BASE_DIR / "data" / "job_descriptions"
-RESULT_FILE = BASE_DIR / "data" / "matching_results" / "candidate_ranking.csv"
+RANKING_FILE = RESULT_DIR / "candidate_ranking.csv"
+JOB_DESCRIPTION_FILE = JOB_DESCRIPTION_DIR / "current_job.txt"
 
-# Make the project root available for importing Src.rag_engine
-if str(BASE_DIR) not in sys.path:
-    sys.path.insert(0, str(BASE_DIR))
-
-try:
-    from src.rag_engine import (
-        generate_answer as rag_generate_answer,
-        store_resumes,
-    )
-    RAG_IMPORT_ERROR = None
-except Exception as error:
-    rag_generate_answer = None
-    store_resumes = None
-    RAG_IMPORT_ERROR = str(error)
+for folder in (
+    RESUME_DIR,
+    PROCESSED_DIR,
+    JOB_DESCRIPTION_DIR,
+    RESULT_DIR,
+    PROJECT_ROOT / "models",
+):
+    folder.mkdir(parents=True, exist_ok=True)
 
 
-# =========================================================
-# 2. HELPER FUNCTIONS
-# =========================================================
+# ============================================================
+# 2. STREAMLIT PAGE CONFIGURATION
+# ============================================================
 
-def generate_answer(question):
-    """Generate an answer using the RAG engine and chat history."""
+st.set_page_config(
+    page_title="Smart Resume Intelligence System",
+    page_icon="📄",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
-    if rag_generate_answer is None:
-        return (
-            "The RAG engine could not be imported.\n\n"
-            f"Import error: {RAG_IMPORT_ERROR}\n\n"
-            "Please check the src folder name and rag_engine.py file."
+st.title("📄 Smart Resume Intelligence System")
+st.caption(
+    "Upload resumes, compare candidates with a job description, "
+    "and ask questions using the AI Recruiter Assistant."
+)
+
+
+# ============================================================
+# 3. HELPER FUNCTIONS
+# ============================================================
+
+def show_project_structure_warning() -> None:
+    """Show a clear warning if the expected source folder is missing."""
+    if not SRC_DIR.exists():
+        st.error(f"Source folder not found: {SRC_DIR}")
+        st.info(
+            "Your source folder must be named exactly 'src' "
+            "and should be inside the main project folder."
+        )
+        st.stop()
+
+    if not (SRC_DIR / "__init__.py").exists():
+        st.warning(
+            "src/__init__.py was not found. Create an empty __init__.py "
+            "file inside the src folder so Python can import src modules."
         )
 
-    # The current question is already saved in chat_history.
-    # Send only earlier messages as conversation history.
-    previous_history = st.session_state.chat_history[:-1]
 
-    return rag_generate_answer(
+def save_uploaded_resumes(uploaded_files: list[Any]) -> int:
+    """Save uploaded PDF files in data/resumes."""
+    saved_count = 0
+
+    for uploaded_file in uploaded_files:
+        if not uploaded_file.name.lower().endswith(".pdf"):
+            st.warning(f"Skipped {uploaded_file.name}: only PDF files are supported.")
+            continue
+
+        # Keep the original filename but remove directory components.
+        safe_name = Path(uploaded_file.name).name
+        destination = RESUME_DIR / safe_name
+        destination.write_bytes(uploaded_file.getvalue())
+        saved_count += 1
+
+    return saved_count
+
+
+def run_python_script(script_name: str) -> tuple[bool, str]:
+    """
+    Run one Python pipeline script from the project root.
+
+    The scripts are expected to support command-line execution, for example:
+        python src/pdf_parser.py
+    """
+    script_path = SRC_DIR / script_name
+
+    if not script_path.exists():
+        return False, f"Script not found: {script_path}"
+
+    try:
+        result = subprocess.run(
+            [sys.executable, str(script_path)],
+            cwd=str(PROJECT_ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=600,
+            check=False,
+        )
+
+        output = (result.stdout or "").strip()
+        errors = (result.stderr or "").strip()
+
+        if result.returncode != 0:
+            message = (
+                f"{script_name} failed with exit code {result.returncode}.\n\n"
+                f"STDOUT:\n{output or '(No standard output)'}\n\n"
+                f"STDERR:\n{errors or '(No error output)'}"
+            )
+            return False, message
+
+        combined = output
+        if errors:
+            combined += ("\n\nWarnings / logs:\n" if combined else "") + errors
+
+        return True, combined or f"{script_name} completed successfully."
+
+    except subprocess.TimeoutExpired:
+        return False, f"{script_name} timed out after 10 minutes."
+    except Exception as exc:
+        return False, f"Could not run {script_name}: {exc}"
+
+
+def run_resume_pipeline() -> tuple[bool, list[tuple[str, str]]]:
+    """
+    Execute the project scripts in order.
+
+    If your scripts use a different execution method or filenames,
+    update this list to match your actual src folder.
+    """
+    pipeline_scripts = [
+        "pdf_parser.py",
+        "skill_extractor.py",
+        "profile_extractor.py",
+        "job_description_parser.py",
+        "matching_engine.py",
+    ]
+
+    logs: list[tuple[str, str]] = []
+
+    for script_name in pipeline_scripts:
+        success, output = run_python_script(script_name)
+        logs.append((script_name, output))
+
+        if not success:
+            return False, logs
+
+    # Build/update the resume vector database after text extraction.
+    try:
+        from src.rag_engine import store_resumes
+
+        store_resumes()
+        logs.append(("RAG database", "Resume knowledge database updated successfully."))
+    except Exception as exc:
+        logs.append(("RAG database", f"Could not update RAG database: {exc}"))
+        return False, logs
+
+    return True, logs
+
+
+def load_ranking_data() -> pd.DataFrame:
+    """Read candidate ranking CSV safely."""
+    if not RANKING_FILE.exists():
+        return pd.DataFrame()
+
+    try:
+        df = pd.read_csv(RANKING_FILE)
+        if df.empty:
+            return pd.DataFrame()
+        return df
+    except pd.errors.EmptyDataError:
+        st.warning("The candidate ranking CSV is empty.")
+        return pd.DataFrame()
+    except Exception as exc:
+        st.error(f"Could not read candidate ranking CSV: {exc}")
+        return pd.DataFrame()
+
+
+def find_score_column(df: pd.DataFrame) -> str | None:
+    """Find a likely candidate matching score column."""
+    possible_columns = [
+        "final_score",
+        "match_score",
+        "similarity_score",
+        "score",
+    ]
+
+    lower_to_original = {str(col).lower(): col for col in df.columns}
+    for column in possible_columns:
+        if column in lower_to_original:
+            return lower_to_original[column]
+
+    return None
+
+
+def get_rag_answer(question: str, chat_history: list[dict[str, str]]) -> str:
+    """Call the RAG chatbot using one consistent function signature."""
+    from src.rag_engine import generate_answer
+
+    answer = generate_answer(
         question=question,
-        chat_history=previous_history,
+        chat_history=chat_history,
         top_k=5,
     )
 
+    if answer is None:
+        return "The AI assistant did not return an answer."
 
-def save_uploaded_resumes(uploaded_files):
-    """Save uploaded PDF files into data/resumes."""
-
-    RESUME_DIR.mkdir(parents=True, exist_ok=True)
-
-    for uploaded_file in uploaded_files:
-        safe_filename = Path(uploaded_file.name).name
-        file_path = RESUME_DIR / safe_filename
-
-        file_path.write_bytes(uploaded_file.getvalue())
+    return str(answer)
 
 
-def save_job_description(job_title, job_description):
-    """Save the current job description as a text file."""
+# ============================================================
+# 4. SIDEBAR - PROJECT STATUS
+# ============================================================
 
-    JD_DIR.mkdir(parents=True, exist_ok=True)
+with st.sidebar:
+    st.header("⚙️ Project Status")
+    st.write("**Project root:**")
+    st.code(str(PROJECT_ROOT), language="text")
 
-    jd_text = (
-        f"Job Title: {job_title.strip()}\n\n"
-        f"{job_description.strip()}"
-    )
+    st.write("**Source folder:**")
+    if SRC_DIR.exists():
+        st.success("src folder found")
+    else:
+        st.error("src folder missing")
 
-    jd_file = JD_DIR / "current_job.txt"
-    jd_file.write_text(jd_text, encoding="utf-8")
+    pdf_count = len(list(RESUME_DIR.glob("*.pdf")))
+    text_count = len(list(PROCESSED_DIR.glob("*.txt")))
 
+    st.metric("PDF resumes", pdf_count)
+    st.metric("Processed text files", text_count)
 
-def run_resume_pipeline():
-    """Run all existing resume-processing scripts in sequence."""
+    if st.button("Refresh application", use_container_width=True):
+        st.rerun()
 
-    pipeline_steps = [
-        ("PDF Parsing", "pdf_parser.py"),
-        ("Skill Extraction", "skill_extractor.py"),
-        ("Profile Extraction", "profile_extractor.py"),
-        ("Job Description Analysis", "job_description_parser.py"),
-        ("Resume Matching", "matching_engine.py"),
-    ]
+    st.divider()
+    if st.button("🗑️ Clear All / New Session", use_container_width=True):
+        import shutil, glob, os
+        for f in glob.glob("data/resumes/*"):
+            os.remove(f)
+        for f in glob.glob("data/processed_text/*"):
+            os.remove(f)
+        for f in glob.glob("data/extracted_profiles/*"):
+            os.remove(f)
+        for f in glob.glob("data/matching_results/*"):
+            os.remove(f)
+        if os.path.exists("models/resume_vector_db"):
+            shutil.rmtree("models/resume_vector_db")
+        st.rerun()
 
-    if not SRC_DIR.exists():
-        st.error(f"Source folder not found: {SRC_DIR}")
-        st.info("Check that your folder is named exactly 'Src'.")
-        return False
+# ============================================================
+# 5. RESUME UPLOAD AND JOB DESCRIPTION
+# ============================================================
 
-    progress = st.progress(0)
-    status = st.empty()
-
-    for index, (step_name, script_name) in enumerate(pipeline_steps):
-        script_path = SRC_DIR / script_name
-
-        if not script_path.exists():
-            st.error(f"Script not found: {script_path}")
-            return False
-
-        status.write(f"Running: **{step_name}**")
-
-        try:
-            result = subprocess.run(
-                [sys.executable, str(script_path)],
-                cwd=str(BASE_DIR),
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                timeout=600,
-            )
-
-            with st.expander(f"{step_name} output"):
-                st.code(result.stdout or "No standard output.")
-
-                if result.stderr:
-                    st.text("Error/output details:")
-                    st.code(result.stderr)
-
-            if result.returncode != 0:
-                st.error(f"{step_name} failed. Check the output above.")
-                return False
-
-        except subprocess.TimeoutExpired:
-            st.error(f"{step_name} timed out. Please try again.")
-            return False
-
-        except Exception as error:
-            st.error(f"{step_name} failed: {error}")
-            return False
-
-        progress.progress((index + 1) / len(pipeline_steps))
-
-    status.success("All resume-processing steps completed.")
-    return True
-
-
-# =========================================================
-# 3. PAGE CONFIGURATION
-# =========================================================
-
-st.set_page_config(
-    page_title="Smart Resume Intelligence",
-    page_icon="📄",
-    layout="wide",
-)
-
-
-# =========================================================
-# 4. CUSTOM HEADER
-# =========================================================
-
-st.title("📄 Smart Resume Intelligence System")
-
-st.write(
-    "AI-powered resume analysis and candidate-job matching platform."
-)
-
-st.divider()
-
-
-# =========================================================
-# 5. RESUME UPLOAD
-# =========================================================
-
-st.header("1. Upload Candidate Resumes")
+st.header("1. Upload Resumes")
 
 uploaded_files = st.file_uploader(
-    "Upload PDF resumes",
+    "Choose one or more candidate resume PDFs",
     type=["pdf"],
     accept_multiple_files=True,
+    help="Upload PDF resumes. Files are saved in data/resumes/.",
 )
 
+if uploaded_files:
+    st.write(f"Selected files: **{len(uploaded_files)}**")
 
-# =========================================================
-# 6. JOB DESCRIPTION INPUT
-# =========================================================
+    if st.button("Save Uploaded Resumes", type="primary"):
+        count = save_uploaded_resumes(uploaded_files)
+        if count:
+            st.success(f"{count} resume(s) saved successfully.")
+        else:
+            st.warning("No PDF resumes were saved.")
+
+st.divider()
 
 st.header("2. Enter Job Description")
 
 job_title = st.text_input(
-    "Job Title",
+    "Job title",
     placeholder="Example: NLP Engineer",
 )
 
 job_description = st.text_area(
-    "Paste Job Description",
-    height=250,
-    placeholder="Enter the job requirements and responsibilities...",
+    "Job description",
+    height=220,
+    placeholder=(
+        "Paste the complete job description here, including required skills, "
+        "experience, responsibilities, and qualifications."
+    ),
 )
 
-
-# =========================================================
-# 7. PROCESS RESUMES AND MATCH
-# =========================================================
-
-if st.button("Analyze Resumes", type="primary"):
-
-    if not uploaded_files:
-        st.error("Please upload at least one PDF resume.")
-
-    elif not job_title.strip() or not job_description.strip():
-        st.error("Please enter the job title and job description.")
-
+if st.button("Save Job Description"):
+    if not job_title.strip() or not job_description.strip():
+        st.warning("Please enter both the job title and job description.")
     else:
-        # Avoid displaying old results if the new analysis fails.
-        st.session_state.pop("results", None)
-
-        with st.spinner("Saving uploaded files..."):
-            save_uploaded_resumes(uploaded_files)
-            save_job_description(job_title, job_description)
-
-        st.success("Uploaded resumes and job description saved.")
-
-        pipeline_success = run_resume_pipeline()
-
-        if pipeline_success:
-
-            if not RESULT_FILE.exists():
-                st.error(
-                    "Matching CSV was not generated. "
-                    "Please check matching_engine.py."
-                )
-
-            else:
-                try:
-                    results = pd.read_csv(RESULT_FILE)
-
-                    required_columns = {"candidate", "final_score"}
-
-                    if not required_columns.issubset(results.columns):
-                        st.error(
-                            "The candidate_ranking.csv file must contain "
-                            "'candidate' and 'final_score' columns."
-                        )
-                    else:
-                        st.session_state["results"] = results
-                        st.success("Resume analysis completed!")
-
-                        # Build/update the vector database for the chatbot.
-                        if store_resumes is not None:
-                            with st.spinner(
-                                "Updating resume knowledge database..."
-                            ):
-                                total_chunks = store_resumes()
-
-                            st.success(
-                                "Resume knowledge database updated. "
-                                f"Chunks stored: {total_chunks}"
-                            )
-                        else:
-                            st.warning(
-                                "RAG engine is unavailable. "
-                                "The chatbot cannot search resumes yet."
-                            )
-
-                except Exception as error:
-                    st.error(f"Could not read candidate results: {error}")
-
-
-# =========================================================
-# 8. DISPLAY CANDIDATE RESULTS
-# =========================================================
-
-if "results" in st.session_state:
-
-    results = st.session_state["results"]
-
-    st.divider()
-    st.header("3. Candidate Ranking")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.metric(
-            "Total Candidates",
-            len(results),
+        JOB_DESCRIPTION_DIR.mkdir(parents=True, exist_ok=True)
+        JOB_DESCRIPTION_FILE.write_text(
+            f"Job Title: {job_title.strip()}\n\n"
+            f"Job Description:\n{job_description.strip()}",
+            encoding="utf-8",
         )
+        st.success(f"Job description saved: {JOB_DESCRIPTION_FILE.name}")
 
-    with col2:
-        average_score = (
-            results["final_score"].mean()
-            if not results.empty
-            else 0
-        )
 
-        st.metric(
-            "Average Match Score",
-            f"{average_score:.2f}%",
-        )
+# ============================================================
+# 6. RUN RESUME PROCESSING PIPELINE
+# ============================================================
 
-    st.subheader("Candidate Matching Results")
+st.divider()
+st.header("3. Process Resumes and Rank Candidates")
 
-    st.dataframe(
-        results,
-        use_container_width=True,
-        hide_index=True,
+st.write(
+    "The pipeline runs PDF extraction, skill extraction, profile extraction, "
+    "job-description parsing, candidate matching, and RAG database creation."
+)
+
+if st.button("Run Resume Analysis", type="primary", use_container_width=True):
+    show_project_structure_warning()
+
+    if not list(RESUME_DIR.glob("*.pdf")):
+        st.error("Please upload and save at least one PDF resume first.")
+    elif not JOB_DESCRIPTION_FILE.exists():
+        st.error("Please save a job description before running the analysis.")
+    else:
+        logs_placeholder = st.container()
+
+        with st.spinner("Processing resumes. This may take a few minutes..."):
+            success, pipeline_logs = run_resume_pipeline()
+
+        with logs_placeholder:
+            st.subheader("Pipeline logs")
+            for script_name, output in pipeline_logs:
+                with st.expander(script_name, expanded=not success):
+                    st.code(output or "No output returned.", language="text")
+
+        if success:
+            st.success("Resume analysis pipeline completed.")
+        else:
+            st.error(
+                "The pipeline stopped because one of the steps failed. "
+                "Open the relevant log above and check the error."
+            )
+
+
+# ============================================================
+# 7. CANDIDATE RANKING RESULTS
+# ============================================================
+
+st.divider()
+st.header("4. Candidate Ranking")
+
+ranking_df = load_ranking_data()
+
+if ranking_df.empty:
+    st.info(
+        "No candidate ranking results are available yet. "
+        "Save resumes and a job description, then run Resume Analysis."
     )
+else:
+    score_column = find_score_column(ranking_df)
 
-    if not results.empty:
-        st.subheader("Candidate Match Score")
+    metric_col1, metric_col2 = st.columns(2)
+    metric_col1.metric("Total candidates", len(ranking_df))
 
-        chart_data = results.set_index("candidate")["final_score"]
-        st.bar_chart(chart_data)
+    if score_column:
+        numeric_scores = pd.to_numeric(ranking_df[score_column], errors="coerce")
+        average_score = numeric_scores.mean()
+        metric_col2.metric(
+            "Average matching score",
+            f"{average_score:.2f}%" if pd.notna(average_score) else "N/A",
+        )
+    else:
+        metric_col2.metric("Average matching score", "Score column not found")
 
+    st.dataframe(ranking_df, use_container_width=True, hide_index=True)
+
+    if score_column:
+        chart_df = ranking_df.copy()
+        chart_df[score_column] = pd.to_numeric(
+            chart_df[score_column], errors="coerce"
+        )
+        chart_df = chart_df.dropna(subset=[score_column])
+
+        if not chart_df.empty:
+            # Use the first available candidate-identifying column as chart labels.
+            label_candidates = [
+                "candidate_name",
+                "name",
+                "resume_name",
+                "filename",
+                "file_name",
+            ]
+            lower_to_original = {
+                str(col).lower(): col for col in chart_df.columns
+            }
+            label_column = next(
+                (
+                    lower_to_original[name]
+                    for name in label_candidates
+                    if name in lower_to_original
+                ),
+                None,
+            )
+
+            if label_column:
+                chart_data = chart_df.set_index(label_column)[[score_column]]
+                st.subheader("Candidate matching scores")
+                st.bar_chart(chart_data)
+
+    csv_data = ranking_df.to_csv(index=False).encode("utf-8")
     st.download_button(
-        label="Download Candidate Results",
-        data=results.to_csv(index=False),
+        "Download Candidate Ranking CSV",
+        data=csv_data,
         file_name="candidate_ranking.csv",
         mime="text/csv",
     )
 
 
-# =========================================================
-# 9. FOOTER
-# =========================================================
+# ============================================================
+# 8. AI RECRUITER ASSISTANT
+# ============================================================
 
 st.divider()
-
-st.caption(
-    "Smart Resume Intelligence System | "
-    "NLP + Sentence Transformers + ChromaDB + AI"
-)
-
-
-# =========================================================
-# 10. AI RECRUITER ASSISTANT
-# =========================================================
-
-st.divider()
-st.header("4. AI Recruiter Assistant")
+st.header("5. AI Recruiter Assistant")
 
 st.write(
-    "Ask questions about candidates, skills, education, experience, "
-    "projects, job matching, or general technical topics."
+    "Ask questions about uploaded resumes, candidate skills, experience, "
+    "education, or candidate-job matching."
 )
 
-if RAG_IMPORT_ERROR:
-    st.warning(
-        "RAG engine import issue: "
-        f"{RAG_IMPORT_ERROR}"
-    )
+if "recruiter_chat_history" not in st.session_state:
+    st.session_state.recruiter_chat_history = []
 
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+if "recruiter_question" not in st.session_state:
+    st.session_state.recruiter_question = ""
 
 # Display previous conversation.
-for message in st.session_state.chat_history:
+for message in st.session_state.recruiter_chat_history:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
 question = st.chat_input(
-    "Ask something about the resumes or a technical topic..."
+    "Example: Which candidate has Python and NLP experience?"
 )
 
 if question:
+    st.session_state.recruiter_chat_history.append(
+        {"role": "user", "content": question}
+    )
 
-    # Display and save the current user question.
     with st.chat_message("user"):
         st.markdown(question)
 
-    st.session_state.chat_history.append(
-        {
-            "role": "user",
-            "content": question,
-        }
-    )
-
-    # Generate the AI response.
     with st.chat_message("assistant"):
-        with st.spinner("Searching resumes and generating answer..."):
-
+        with st.spinner("Searching resume knowledge and generating an answer..."):
             try:
-                answer = generate_answer(question)
-            except Exception as error:
-                answer = f"An error occurred while generating the answer: {error}"
+                # Pass only the earlier conversation as history.
+                previous_history = st.session_state.recruiter_chat_history[:-1]
+                answer = get_rag_answer(question, previous_history)
+                st.markdown(answer)
 
-            st.markdown(answer)
+                st.session_state.recruiter_chat_history.append(
+                    {"role": "assistant", "content": answer}
+                )
 
-    # Save the assistant response for future conversation context.
-    st.session_state.chat_history.append(
-        {
-            "role": "assistant",
-            "content": answer,
-        }
-    )
+            except ImportError as exc:
+                answer = (
+                    "RAG module could not be imported. Check that src is lowercase, "
+                    "src/__init__.py exists, and all required packages are installed.\n\n"
+                    f"Technical error: {exc}"
+                )
+                st.error(answer)
+                st.session_state.recruiter_chat_history.append(
+                    {"role": "assistant", "content": answer}
+                )
 
-# Clear chat without deleting uploaded resumes or analysis results.
-if st.button("Clear Chat"):
-    st.session_state.chat_history = []
-    st.rerun()
+            except Exception as exc:
+                answer = (
+                    "I could not generate an answer. Check that Ollama is running, "
+                    "the configured model is installed, and the ChromaDB database "
+                    "has been created.\n\n"
+                    f"Technical error: {exc}"
+                )
+                st.error(answer)
+                st.session_state.recruiter_chat_history.append(
+                    {"role": "assistant", "content": answer}
+                )
+
+col1, col2 = st.columns([1, 5])
+with col1:
+    if st.button("Clear Chat"):
+        st.session_state.recruiter_chat_history = []
+        st.rerun()
+
+
+# ============================================================
+# 9. FOOTER
+# ============================================================
+
+st.divider()
+st.caption(
+    "Smart Resume Intelligence System | NLP • Semantic Search • "
+    "Resume Matching • Retrieval-Augmented Generation"
+)
