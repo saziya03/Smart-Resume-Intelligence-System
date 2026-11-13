@@ -1,3 +1,4 @@
+
 streamlit
 fastapi
 uvicorn
@@ -9,7 +10,5 @@ chromadb
 pydantic
 python-multipart
 ollama
-spacy
-nltk
-skelearn
 spacy==3.7.5
+nltk
