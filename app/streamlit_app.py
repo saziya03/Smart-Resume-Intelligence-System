@@ -263,11 +263,11 @@ with st.sidebar:
     st.metric("PDF resumes", pdf_count)
     st.metric("Processed text files", text_count)
 
-    if st.button("Refresh application", use_container_width=True):
+    if st.button("Refresh application", width='stretch' ):
         st.rerun()
 
     st.divider()
-    if st.button("🗑️ Clear All / New Session", use_container_width=True):
+    if st.button("🗑️ Clear All / New Session", width='stretch' ):
         import shutil, glob, os
         for f in glob.glob("data/resumes/*"):
             os.remove(f)
@@ -347,7 +347,7 @@ st.write(
     "job-description parsing, candidate matching, and RAG database creation."
 )
 
-if st.button("Run Resume Analysis", type="primary", use_container_width=True):
+if st.button("Run Resume Analysis", type="primary", width='stretch' ):
     show_project_structure_warning()
 
     if not list(RESUME_DIR.glob("*.pdf")):
@@ -405,7 +405,7 @@ else:
     else:
         metric_col2.metric("Average matching score", "Score column not found")
 
-    st.dataframe(ranking_df, use_container_width=True, hide_index=True)
+    st.dataframe(ranking_df, width='stretch' , hide_index=True)
 
     if score_column:
         chart_df = ranking_df.copy()
