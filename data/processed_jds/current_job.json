@@ -1,0 +1,10 @@
+{
+    "job_id": "current_job",
+    "job_description": "Job Title: Data Analytics\n\nJob Description:\nJob Title: Data Analyst\n\nJob Summary:\n We are seeking a Data Analyst to collect, analyze, and visualize data to support business decision-making.\n\nResponsibilities:\n\nAnalyze and interpret data.\nCreate reports and dashboards.\nWrite SQL queries and perform data cleaning.\nIdentify trends and provide actionable insights.\nCollaborate with teams to solve business problems.\n\nRequired Skills:\n\nSQL\nPython (Pandas, NumPy)\nExcel\nPower BI/Tableau\nData Visualization\n\nQualifications:\n\nBachelor's degree in a relevant field.\nStrong analytical and problem-solving skills.\n\nExperience: 0-2 Years (Freshers can apply)\n\nLocation: Remote/On-site",
+    "required_skills": [
+        "Python",
+        "SQL",
+        "Pandas",
+        "NumPy"
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "job_id": "nlp_engineer_jd",
+    "job_description": "# NLP Engineer \u2013 Fresher\n\n**Job Role:** NLP Engineer  \n**Experience:** Fresher / 0\u20131 Years\n\n**Job Description:**\n\nWe are looking for an enthusiastic NLP Engineer to join our AI team. The candidate should have knowledge of Python programming, Natural Language Processing, and Machine Learning.\n\n**Required Skills:**\n- Python\n- Natural Language Processing (NLP)\n- Machine Learning\n- Deep Learning\n- SQL\n- Pandas and NumPy\n- Text Preprocessing\n- Tokenization\n- Stemming and Lemmatization\n- TF-IDF\n- Word Embeddings\n- Scikit-learn\n- BERT\n- Hugging Face\n- Transformers\n\n**Responsibilities:**\n- Process and clean textual data.\n- Develop NLP models for text classification.\n- Perform feature extraction and text analysis.\n- Work with machine learning algorithms.\n- Evaluate model performance and improve accuracy.",
+    "required_skills": [
+        "Python",
+        "SQL",
+        "Machine Learning",
+        "Deep Learning",
+        "Natural Language Processing",
+        "NLP",
+        "Pandas",
+        "NumPy",
+        "Scikit-learn",
+        "BERT",
+        "Hugging Face",
+        "Transformers",
+        "Text Preprocessing",
+        "Tokenization",
+        "Stemming",
+        "Lemmatization",
+        "TF-IDF",
+        "Word Embeddings"
+    ]
+}

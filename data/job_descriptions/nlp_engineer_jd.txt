@@ -1,0 +1,32 @@
+# NLP Engineer – Fresher
+
+**Job Role:** NLP Engineer  
+**Experience:** Fresher / 0–1 Years
+
+**Job Description:**
+
+We are looking for an enthusiastic NLP Engineer to join our AI team. The candidate should have knowledge of Python programming, Natural Language Processing, and Machine Learning.
+
+**Required Skills:**
+- Python
+- Natural Language Processing (NLP)
+- Machine Learning
+- Deep Learning
+- SQL
+- Pandas and NumPy
+- Text Preprocessing
+- Tokenization
+- Stemming and Lemmatization
+- TF-IDF
+- Word Embeddings
+- Scikit-learn
+- BERT
+- Hugging Face
+- Transformers
+
+**Responsibilities:**
+- Process and clean textual data.
+- Develop NLP models for text classification.
+- Perform feature extraction and text analysis.
+- Work with machine learning algorithms.
+- Evaluate model performance and improve accuracy.
