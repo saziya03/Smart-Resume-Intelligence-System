@@ -1,28 +1,32 @@
-Job Title: NLP Engineer
+Job Title: Data Analytics
 
 Job Description:
-We are looking for an NLP Engineer with experience in Python, Machine Learning, and Natural Language Processing to build intelligent language-based solutions. The candidate will develop, fine-tune, and deploy NLP models for tasks such as text classification, sentiment analysis, information extraction, and conversational AI.
+Job Title: Data Analyst
 
-Key Skills:
-
-Python
-NLP (NLTK, spaCy, Hugging Face)
-Machine Learning & Deep Learning
-Scikit-learn, TensorFlow, or PyTorch
-Transformers (BERT, GPT, etc.)
-Text Processing & Feature Engineering
-SQL and Data Handling
+Job Summary:
+ We are seeking a Data Analyst to collect, analyze, and visualize data to support business decision-making.
 
 Responsibilities:
 
-Develop and optimize NLP models and pipelines.
-Fine-tune transformer-based models.
-Build and deploy AI-powered applications.
-Evaluate and improve model performance.
-Collaborate with cross-functional teams to deliver NLP solutions.
+Analyze and interpret data.
+Create reports and dashboards.
+Write SQL queries and perform data cleaning.
+Identify trends and provide actionable insights.
+Collaborate with teams to solve business problems.
 
-Preferred:
+Required Skills:
 
-Experience with LLMs, RAG, ChromaDB/FAISS, and Vector Embeddings.
-Knowledge of model deployment and MLOps.
-Keywords: Python, NLP, Machine Learning, Transformers, Hugging Face, BERT, PyTorch, TensorFlow, RAG, LLMs.
+SQL
+Python (Pandas, NumPy)
+Excel
+Power BI/Tableau
+Data Visualization
+
+Qualifications:
+
+Bachelor's degree in a relevant field.
+Strong analytical and problem-solving skills.
+
+Experience: 0-2 Years (Freshers can apply)
+
+Location: Remote/On-site

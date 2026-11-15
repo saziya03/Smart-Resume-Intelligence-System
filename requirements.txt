@@ -1,8 +1,9 @@
 
 streamlit
 fastapi
-uvicorn
+uvicorn[standard]
 pandas
+numpy==2.2.6
 PyMuPDF
 scikit-learn
 sentence-transformers
@@ -10,5 +11,7 @@ chromadb
 pydantic
 python-multipart
 ollama
-spacy==3.7.5
+spacy==3.8.7
 nltk
+python-dotenv
+requests
