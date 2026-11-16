@@ -1,5 +1,5 @@
 
-import pymupdf
+import fitz
 from pathlib import Path
 
 
@@ -16,7 +16,7 @@ def extract_resume_text(pdf_path):
 
     extracted_text = []
 
-    with pymupdf.open(pdf_path) as doc:
+    with fitz.open(pdf_path) as doc:
 
         for page_number, page in enumerate(doc, start=1):
 
