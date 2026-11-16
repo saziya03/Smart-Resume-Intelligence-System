@@ -1,0 +1,26 @@
+{
+    "candidate_id": "RAHUL SHARMA",
+    "email": [
+        "rahul@example.com"
+    ],
+    "phone": [
+        "9876543210"
+    ],
+    "technical_skills": [
+        "BERT",
+        "Hugging Face",
+        "Machine Learning",
+        "Natural Language Processing",
+        "NLP",
+        "NumPy",
+        "Pandas",
+        "Python",
+        "SQL"
+    ],
+    "name": "Machine Learning",
+    "education": [
+        "Master of Computer Applications (MCA)",
+        "Bachelor of Computer Applications (BCA)"
+    ],
+    "experience": "Fresher"
+}

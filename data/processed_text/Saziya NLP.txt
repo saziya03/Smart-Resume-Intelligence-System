@@ -1,0 +1,43 @@
+SAZIYA ALVI
++91-6306632089 — saziyaalvi7@gmail.com — linkedin.com/in/saziya03 — github.com/saziya03
+OBJECTIVE
+MCA student aspiring to build a career as an NLP Engineer, with knowledge of Python, Natural Language Processing,
+and Machine Learning. Familiar with text preprocessing, feature extraction, and classification techniques. Interested
+in developing practical NLP applications and solving real-world language processing problems.
+EDUCATION
+Master of Computer Applications (MCA), JSS Academy of Technical Education, Noida
+2025–Present
+Bachelor of Science (B.Sc.), CSJMU, Kanpur
+2021–2024
+Senior Secondary (Class XII)
+2021
+Unnao Public Inter College, UP Board
+81%
+TECHNICAL SKILLS
+Programming
+Python, SQL
+NLP Concepts
+Text Preprocessing, Tokenization, Stop Word Removal, Stemming,
+Lemmatization
+NLP Libraries
+NLTK, Scikit-learn
+Machine Learning
+Classification, Naive Bayes, Logistic Regression
+Feature Extraction
+Bag of Words (BoW), TF-IDF
+Python Libraries
+Pandas, NumPy
+Database
+MySQL
+Tools
+Jupyter Notebook, VS Code, Git, GitHub
+PROJECTS
+Duplicate Question Pair Detection [GitHub]
+Python, NLP, Scikit-learn
+• Developing an NLP-based system to identify duplicate questions using the Quora Question Pairs dataset.
+• Performed exploratory data analysis and text preprocessing.
+• Implemented Bag of Words (CountVectorizer) for text feature extraction.
+LANGUAGES
+• English
+• Hindi (Native Proficiency)
+• Urdu
