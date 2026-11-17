@@ -3,8 +3,8 @@ streamlit
 fastapi
 uvicorn[standard]
 pandas==2.2.3
-numpy==1.26.4
-PyMuPDF
+numpy>=2.2.0,<2.3.0
+PyMuPDF==1.26.4
 scikit-learn
 sentence-transformers
 chromadb
