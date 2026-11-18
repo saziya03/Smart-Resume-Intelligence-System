@@ -1,0 +1,34 @@
+{
+    "job_id": "current_job",
+    "job_title": "Data Analytic",
+    "job_description": "Job Title: Data Analytic\n\nJob Description:\nJob Title: Data Analyst\n\nJob Summary:\nWe are seeking a Data Analyst to collect, analyze, and visualize data to support business decision-making.\n\nResponsibilities:\n\nAnalyze and interpret data.\nCreate reports and dashboards.\nWrite SQL queries and perform data cleaning.\nIdentify trends and provide actionable insights.\nCollaborate with teams to solve business problems.\n\nRequired Skills:\n\nSQL\nPython (Pandas, NumPy)\nExcel\nPower BI/Tableau\nData Visualization\n\nQualifications:\n\nBachelor's degree in a relevant field.\nStrong analytical and problem-solving skills.\n\nExperience: 0-2 Years (Freshers can apply)\n\nLocation: Remote/On-site",
+    "required_skills": [
+        "Data Visualization",
+        "Excel",
+        "NumPy",
+        "Pandas",
+        "Power BI",
+        "Python",
+        "SQL",
+        "Tableau"
+    ],
+    "preferred_skills": [],
+    "all_skills": [
+        "Data Visualization",
+        "Excel",
+        "NumPy",
+        "Pandas",
+        "Power BI",
+        "Python",
+        "SQL",
+        "Tableau"
+    ],
+    "experience_requirements": [
+        "0-2 Years",
+        "Fresher"
+    ],
+    "responsibilities": "Analyze and interpret data.\nCreate reports and dashboards.\nWrite SQL queries and perform data cleaning.\nIdentify trends and provide actionable insights.\nCollaborate with teams to solve business problems.\nRequired Skills:\nSQL\nPython (Pandas, NumPy)\nExcel\nPower BI/Tableau\nData Visualization",
+    "qualifications": "Bachelor's degree in a relevant field.\nStrong analytical and problem-solving skills.\nExperience: 0-2 Years (Freshers can apply)\nLocation: Remote/On-site",
+    "preferred_qualifications": "",
+    "processed_at": "2026-11-18T19:50:35.540150"
+}
