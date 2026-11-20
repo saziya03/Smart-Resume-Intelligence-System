@@ -11,7 +11,7 @@ Supports:
 - Error handling and logging
 """
 
-import fitz
+import pymupdf as fitz
 import logging
 from pathlib import Path
 
