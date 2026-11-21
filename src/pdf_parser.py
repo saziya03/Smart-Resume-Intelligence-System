@@ -1,44 +1,42 @@
-
 """
 Smart Resume Intelligence System
 PDF Resume Text Extraction
+
+Reads only newly uploaded resumes from data/current_uploads
+and writes extracted text to data/processed_text.
 """
 
 import logging
 from pathlib import Path
-import pymupdf as fitz
+
+try:
+    import pymupdf
+except ImportError as exc:
+    raise RuntimeError(
+        "PyMuPDF is missing. Install it using: "
+        "python -m pip install PyMuPDF"
+    ) from exc
 
 
-# ==========================================
-# 1. PROJECT CONFIGURATION
-# ==========================================
-
+# Project root is the parent of the src directory.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-RESUME_DIR = BASE_DIR / "data" / "resumes"
+RESUME_DIR = BASE_DIR / "data" / "current_uploads"
 OUTPUT_DIR = BASE_DIR / "data" / "processed_text"
 
 RESUME_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-
-# ==========================================
-# 2. LOGGING CONFIGURATION
-# ==========================================
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
-
 logger = logging.getLogger(__name__)
 
 
-# ==========================================
-# 3. EXTRACT TEXT FROM ONE PDF
-# ==========================================
-
 def extract_resume_text(pdf_path: Path) -> str:
+    """Extract readable text from one PDF resume."""
+    pdf_path = Path(pdf_path)
 
     if not pdf_path.exists():
         raise FileNotFoundError(f"Resume not found: {pdf_path}")
@@ -48,15 +46,12 @@ def extract_resume_text(pdf_path: Path) -> str:
 
     extracted_text = []
 
-    with fitz.open(str(pdf_path)) as doc:
-
+    with pymupdf.open(str(pdf_path)) as doc:
         if len(doc) == 0:
             raise ValueError("PDF contains no pages.")
 
         for page_number, page in enumerate(doc, start=1):
-
             text = page.get_text("text")
-
             if text:
                 extracted_text.append(text)
 
@@ -69,17 +64,16 @@ def extract_resume_text(pdf_path: Path) -> str:
     return "\n".join(extracted_text).strip()
 
 
-# ==========================================
-# 4. PROCESS ALL PDF RESUMES
-# ==========================================
-
-def process_all_resumes():
-
+def process_all_resumes() -> dict:
+    """Process every PDF currently present in data/current_uploads."""
     pdf_files = sorted(
         file for file in RESUME_DIR.iterdir()
-        if file.is_file()
-        and file.suffix.lower() == ".pdf"
+        if file.is_file() and file.suffix.lower() == ".pdf"
     )
+
+    # Remove old extracted text so it cannot be mixed with this upload batch.
+    for old_text_file in OUTPUT_DIR.glob("*.txt"):
+        old_text_file.unlink()
 
     total = len(pdf_files)
     successful = 0
@@ -87,9 +81,7 @@ def process_all_resumes():
     skipped = 0
 
     if total == 0:
-
-        logger.warning("No PDF resumes found.")
-
+        logger.warning("No PDF resumes found in %s", RESUME_DIR)
         return {
             "total": 0,
             "successful": 0,
@@ -101,46 +93,24 @@ def process_all_resumes():
     logger.info("Total resumes found: %s", total)
 
     for pdf_path in pdf_files:
-
         logger.info("Processing: %s", pdf_path.name)
 
         try:
-
             resume_text = extract_resume_text(pdf_path)
 
             if not resume_text:
-
-                logger.warning(
-                    "No readable text found: %s",
-                    pdf_path.name
-                )
-
+                logger.warning("No readable text found: %s", pdf_path.name)
                 skipped += 1
                 continue
 
-            output_file = OUTPUT_DIR / (
-                pdf_path.stem + ".txt"
-            )
-
-            output_file.write_text(
-                resume_text,
-                encoding="utf-8"
-            )
-
+            output_file = OUTPUT_DIR / f"{pdf_path.stem}.txt"
+            output_file.write_text(resume_text, encoding="utf-8")
             successful += 1
 
-            logger.info(
-                "Successfully saved: %s",
-                output_file.name
-            )
+            logger.info("Successfully saved: %s", output_file.name)
 
         except Exception:
-
-            logger.exception(
-                "Failed to process: %s",
-                pdf_path.name
-            )
-
+            logger.exception("Failed to process: %s", pdf_path.name)
             failed += 1
 
     report = {
@@ -152,23 +122,15 @@ def process_all_resumes():
     }
 
     logger.info("FINAL REPORT: %s", report)
-
     return report
 
 
-# ==========================================
-# 5. MAIN EXECUTION
-# ==========================================
-
 if __name__ == "__main__":
-
     result = process_all_resumes()
 
     print("\n========== PDF PROCESSING REPORT ==========")
-
     print(f"Total PDFs: {result['total']}")
     print(f"Successful: {result['successful']}")
     print(f"Failed: {result['failed']}")
     print(f"Skipped: {result['skipped']}")
-
     print(result["message"])
