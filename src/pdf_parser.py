@@ -2,39 +2,15 @@
 """
 Smart Resume Intelligence System
 PDF Resume Text Extraction
-
-Features:
-- Multiple PDF resume processing
-- PyMuPDF text extraction
-- Case-insensitive PDF extensions
-- UTF-8 output
-- PDF validation
-- Error handling and logging
 """
 
 import logging
 from pathlib import Path
-
-# ==========================================
-# 1. IMPORT PDF LIBRARY
-# ==========================================
-
-try:
-    import pymupdf as fitz
-
-except ImportError:
-    try:
-        import fitz
-
-    except ImportError:
-        raise ImportError(
-            "PyMuPDF is not installed. "
-            "Add PyMuPDF to requirements.txt"
-        )
+import pymupdf as fitz
 
 
 # ==========================================
-# 2. PROJECT CONFIGURATION
+# 1. PROJECT CONFIGURATION
 # ==========================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,7 +23,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ==========================================
-# 3. LOGGING CONFIGURATION
+# 2. LOGGING CONFIGURATION
 # ==========================================
 
 logging.basicConfig(
@@ -59,18 +35,16 @@ logger = logging.getLogger(__name__)
 
 
 # ==========================================
-# 4. EXTRACT TEXT FROM SINGLE PDF
+# 3. EXTRACT TEXT FROM ONE PDF
 # ==========================================
 
 def extract_resume_text(pdf_path: Path) -> str:
 
     if not pdf_path.exists():
-        raise FileNotFoundError(
-            f"Resume not found: {pdf_path}"
-        )
+        raise FileNotFoundError(f"Resume not found: {pdf_path}")
 
     if pdf_path.suffix.lower() != ".pdf":
-        raise ValueError("Invalid PDF file extension.")
+        raise ValueError("Invalid PDF extension.")
 
     extracted_text = []
 
@@ -87,7 +61,7 @@ def extract_resume_text(pdf_path: Path) -> str:
                 extracted_text.append(text)
 
             logger.info(
-                "Extracted page %s from %s",
+                "Page %s extracted from %s",
                 page_number,
                 pdf_path.name
             )
@@ -96,7 +70,7 @@ def extract_resume_text(pdf_path: Path) -> str:
 
 
 # ==========================================
-# 5. PROCESS ALL PDF RESUMES
+# 4. PROCESS ALL PDF RESUMES
 # ==========================================
 
 def process_all_resumes():
@@ -114,10 +88,7 @@ def process_all_resumes():
 
     if total == 0:
 
-        logger.warning(
-            "No PDF resumes found in %s",
-            RESUME_DIR
-        )
+        logger.warning("No PDF resumes found.")
 
         return {
             "total": 0,
@@ -127,35 +98,26 @@ def process_all_resumes():
             "message": "No PDF resumes found."
         }
 
-    logger.info("Total PDF resumes found: %s", total)
-
-    # Process each resume
+    logger.info("Total resumes found: %s", total)
 
     for pdf_path in pdf_files:
 
-        logger.info(
-            "Processing resume: %s",
-            pdf_path.name
-        )
+        logger.info("Processing: %s", pdf_path.name)
 
         try:
 
-            # Extract PDF text
             resume_text = extract_resume_text(pdf_path)
 
-            # Check extracted content
             if not resume_text:
 
                 logger.warning(
-                    "No readable text found in %s. "
-                    "PDF may be scanned.",
+                    "No readable text found: %s",
                     pdf_path.name
                 )
 
                 skipped += 1
                 continue
 
-            # Save extracted text
             output_file = OUTPUT_DIR / (
                 pdf_path.stem + ".txt"
             )
@@ -165,26 +127,21 @@ def process_all_resumes():
                 encoding="utf-8"
             )
 
+            successful += 1
+
             logger.info(
                 "Successfully saved: %s",
                 output_file.name
             )
 
-            successful += 1
-
-        except Exception as error:
+        except Exception:
 
             logger.exception(
-                "Error processing %s: %s",
-                pdf_path.name,
-                error
+                "Failed to process: %s",
+                pdf_path.name
             )
 
             failed += 1
-
-    # ======================================
-    # 6. FINAL REPORT
-    # ======================================
 
     report = {
         "total": total,
@@ -200,7 +157,7 @@ def process_all_resumes():
 
 
 # ==========================================
-# 7. MAIN EXECUTION
+# 5. MAIN EXECUTION
 # ==========================================
 
 if __name__ == "__main__":
