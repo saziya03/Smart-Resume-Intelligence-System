@@ -1,0 +1,32 @@
+Job Title: Data Analyst
+
+Job Description:
+Job Title: Data Analyst
+
+Job Summary:
+ We are seeking a Data Analyst to collect, analyze, and visualize data to support business decision-making.
+
+Responsibilities:
+
+Analyze and interpret data.
+Create reports and dashboards.
+Write SQL queries and perform data cleaning.
+Identify trends and provide actionable insights.
+Collaborate with teams to solve business problems.
+
+Required Skills:
+
+SQL
+Python (Pandas, NumPy)
+Excel
+Power BI/Tableau
+Data Visualization
+
+Qualifications:
+
+Bachelor's degree in a relevant field.
+Strong analytical and problem-solving skills.
+
+Experience: 0-2 Years (Freshers can apply)
+
+Location: Remote/On-site

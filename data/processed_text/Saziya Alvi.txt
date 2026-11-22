@@ -1,0 +1,44 @@
+SAZIYA ALVI
++91-6306632089 — saziyaalvi7@gmail.com — linkedin.com/in/saziya03 — github.com/saziya03
+SUMMARY
+MCA student with a strong foundation in Python, SQL, Data Analytics, and Statistics.
+Hands-on experience
+analyzing datasets using Pandas, NumPy, and SQL, performing data cleaning, exploratory data analysis (EDA),
+and developing interactive dashboards using Power BI. Familiar with data visualization, KPI tracking, and extracting
+meaningful business insights from data. Eager to apply analytical and problem-solving skills in an entry-level Data
+Analyst role.
+EDUCATION
+Master of Computer Applications (MCA)
+2025–Present
+JSS Academy of Technical Education, Noida (CGPA 7.09/10)
+Bachelor of Science (B.Sc.),
+2021–2024
+CSJMU, Kanpur (CGPA:8.4/10)
+Senior Secondary (Class XII)
+2020-2021
+Unnao Public Inter College, UP Board (Percentage:81%)
+TECHNICAL SKILLS
+Programming: Python, SQL
+Python Libraries: Pandas, NumPy, Matplotlib, Seaborn
+Data Analysis: Data Cleaning, Exploratory Data Analysis (EDA), Data Manipulation, Data Visualization
+SQL: Joins, Subqueries, GROUP BY, Aggregate Functions
+Microsoft Excel: Pivot Tables, VLOOKUP, XLOOKUP, IF, SUMIF
+Power BI: DAX, Power Query, Data Modeling, Interactive Dashboards, KPI
+Statistics: Descriptive Statistics, Correlation, Hypothesis Testing
+Database & Tools: MySQL, Git, GitHub, Jupyter Notebook, VS Code, Google Colab
+PROJECTS
+Customer Churn Analysis
+[GitHub]
+Python, SQL, Pandas
+• Analyzed 10K+ customer records using Python and Pandas to identify churn patterns and perform data
+cleaning and EDA.
+• Visualized customer churn trends to identify key factors associated with customer attrition.
+Blinkit Grocery Sales Dashboard
+[GitHub]
+Power BI, DAX
+• Developed an interactive Power BI dashboard to analyze sales, revenue, and outlet performance across 8,523+
+records.
+• Created DAX measures and Power Query transformations to track key performance indicators and business
+trends.
+CERTIFICATIONS & JOB SIMULATIONS
+• Deloitte Australia – Data Analytics Job Simulation, Forage

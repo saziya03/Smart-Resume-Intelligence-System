@@ -1,0 +1,5 @@
+﻿candidate,job_id,job_title,semantic_score,skill_score,required_skill_score,experience_score,candidate_experience_years,final_score,matched_skills,missing_skills,matched_preferred_skills,missing_preferred_skills,recommendation
+Saziya Alvi,current_job,Data Analyst,75.57,87.5,87.5,Not Available,Not Available,82.73,"data visualization, excel, numpy, pandas, power bi, python, sql",tableau,,,Good Match
+Saziya Nlp,current_job,Data Analyst,42.93,50.0,50.0,Not Available,Not Available,47.17,"numpy, pandas, python, sql","data visualization, excel, power bi, tableau",,,Low Match
+Saziya SDET,current_job,Data Analyst,36.85,25.0,25.0,Not Available,Not Available,29.74,"python, sql","data visualization, excel, numpy, pandas, power bi, tableau",,,Low Match
+akritii_resume,current_job,Data Analyst,30.26,25.0,25.0,Not Available,Not Available,27.1,"python, sql","data visualization, excel, numpy, pandas, power bi, tableau",,,Low Match

@@ -1,0 +1,68 @@
+Akriti Awasthi
+Ó +91-9569884049
+R akriti4940@gmail.com
+° LinkedIn
+ akriti41
+EDUCATION
+Master of Computer Application
+2025 – Present
+JSS Academy of Technical Education, Noida
+CGPA: 8.41
+Bachelor of Computer Applications
+2022 – 2025
+Modern Girls College of Professional Studies, Lucknow
+CGPA: 8.03
+Class XII (Senior Secondary)
+2021
+S.K.D. Academy, CISCE
+Percentage: 81.4%
+ABOUT
+Results-driven Master of Computer Applications student with a strong foundation in full-stack web development
+and Data Structures. Adept at building scalable applications using React.js, Node.js, and MongoDB, alongside
+experience in integrating AI APIs to engineer optimized, user-centric solutions.
+PROJECTS
+IntervueX W | GitHub
+March 2026 – May 2026
+• Built an AI-powered mock interview platform using React.js, Node.js, Express.js, MongoDB, and Redux
+Toolkit to simulate real interview experiences.
+• Integrated AI APIs for resume parsing, personalized interview question generation, and automated
+performance evaluation.
+• Implemented Razorpay payment gateway for secure premium subscriptions and generated downloadable PDF
+interview reports with detailed feedback.
+• Developed a responsive, modern UI using Tailwind CSS, optimizing state management and user experience
+across devices.
+Learning Management System (LMS) W | GitHub
+Dec 2025 – Jan 2026
+• Engineered a full-stack course streaming platform with React.js and Redux Toolkit, enabling educators to
+create, update, and manage courses while providing students with structured video-based learning and
+dynamic lecture navigation.
+• Implemented secure authentication and role-based authorization using JWT and protected routes to ensure
+controlled access to educator-only features and restricted course content.
+• Developed RESTful APIs using Node.js and Express.js, integrated MongoDB for scalable data storage, and
+utilized Multer for secure media/file uploads (course thumbnails and lecture assets).
+• Designed a responsive, high-performance UI with Tailwind CSS, optimized client-side routing with React
+Router, and handled asynchronous API communication using Axios for efficient data fetching and state
+management.
+• Automated CI/CD workflows and deployments with GitHub Actions and AWS ECR.
+TECHNICAL SKILLS
+• Languages: Java, python, JavaScript, SQL, HTML/CSS
+• Technologies: React.js, Node.js, Express.js, Redux Toolkit, Tailwind CSS, REST APIs
+• AI & Data: Machine Learning (ML), RAG, LangChain, Embedding
+• Concepts: Data Structures and Algorithms, Object-Oriented Programming, DBMS, Operating Systems,
+Computer Networks
+• Tools & Cloud: Git, GitHub, Docker, AWS, Postman, VS Code
+• Database:
+MySQL, MongoDB, SQL Server, ChromaDB
+• Software Testing: Manual Testing, Functional Testing, Regression Testing, Test Case Design, Bug Reporting,
+API Testing (Postman)
+ACHIEVEMENTS
+• Data Structures & Algorithms: Solved 300+ problems across various competitive coding platforms.
+• Competitive Exams: Secured All India Rank (AIR) 2036 in NIMCET and All India Rank (AIR) 4048
+in CUET PG.
+
+POSITIONS OF RESPONSIBILITY
+Placement Coordinator | JSS Academy of Technical Education
+2025 – Present
+• Coordinated recruitment activities for placement drives involving students and recruiters.
+• Managed placement databases and interview scheduling with high accuracy.
+• Collaborated with faculty and industry representatives to streamline placement operations.

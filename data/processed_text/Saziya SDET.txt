@@ -1,0 +1,40 @@
+SAZIYA ALVI
++91-6306632089 — saziyaalvi7@gmail.com — linkedin.com/in/saziya03 — github.com/saziya03
+SUMMARY
+MCA student with a strong foundation in Python, SQL, DBMS, and software development fundamentals. Hands-on
+experience building Python-based applications and working with REST APIs, JSON, and Postman. Interested in
+software testing, API validation, test case design, and automation testing. Eager to contribute to software quality
+and reliable product releases as an SDET Intern.
+EDUCATION
+Master of Computer Applications (MCA)
+2025–Present
+JSS Academy of Technical Education, Noida (CGPA 7.09/10)
+Bachelor of Science (B.Sc.),
+2021–2024
+CSJMU, Kanpur (CGPA:8.43/10)
+Senior Secondary (Class XII)
+2020-2021
+Unnao Public Inter College, UP Board (Percentage:81%)
+TECHNICAL SKILLS
+Programming Languages: Python, JavaScript (Basic)
+Backend Development: FastAPI (Basic), Streamlit
+Core Concepts: Data Structures and Algorithms, OOP, DBMS, Operating Systems, Computer Networks
+Database: SQL, MySQL
+LLM & RAG: LLM Fundamentals, Retrieval-Augmented Generation (RAG), Semantic Search, ChromaDB
+Developer Tools: Git, GitHub, Jupyter Notebook, VS Code, Postman
+Other Skills: SEO (Basic)
+PROJECTS
+Smart-Resume-Intelligence-System [GitHub]
+Python, NLP, Sentence Transformers, ChromaDB,
+RAG[GitHub]
+• Developed a resume screening application to extract candidate information and match resumes against job
+descriptions.
+Implemented PDF processing, skill extraction, candidate ranking, and AI-based recruiter assistance.
+Worked on debugging, input validation, and handling multiple resume uploads.
+FinPay-SDET-Automation [GitHub]
+Python, Pytest, Requests, REST API
+• Developed automated API test cases using Python, Pytest, and Requests to validate REST API functionality.
+Implemented positive, negative, and edge-case testing for payment operations, transaction history, and input
+validation.
+Validated HTTP status codes, JSON responses, and API behavior across different test scenarios.
+Executed automated test suites using Pytest to identify API failures and improve test coverage.

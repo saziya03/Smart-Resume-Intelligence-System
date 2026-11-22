@@ -4,7 +4,7 @@ fastapi
 uvicorn[standard]
 pandas==2.2.3
 numpy
-PyMuPDF==1.26.7
+PyMuPD
 scikit-learn
 sentence-transformers
 chromadb

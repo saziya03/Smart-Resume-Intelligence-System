@@ -1,0 +1,30 @@
+{
+    "candidate_id": "akritii_resume",
+    "email": [
+        "akriti4940@gmail.com"
+    ],
+    "phone": [
+        "+91-9569884049"
+    ],
+    "technical_skills": [
+        "AI",
+        "AWS",
+        "Docker",
+        "Git",
+        "GitHub",
+        "Java",
+        "LangChain",
+        "Machine Learning",
+        "MySQL",
+        "python",
+        "RAG",
+        "SQL"
+    ],
+    "name": "Noida\nCGPA",
+    "education": [
+        "Master of Computer Application",
+        "Bachelor of Computer Applications",
+        "Results-driven Master of Computer Applications student with a strong foundation in full-stack web development"
+    ],
+    "experience": "Not specified"
+}

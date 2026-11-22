@@ -1,0 +1,44 @@
+SAZIYA ALVI
++91-6306632089 — saziyaalvi7@gmail.com — linkedin.com/in/saziya03 — github.com/saziya03
+SUMMARY
+MCA student with a strong foundation in Python, SQL, Natural Language Processing, and Machine Learning.
+Hands-on experience building AI-powered applications using NLP techniques, Sentence Transformers, vector em-
+beddings, and Retrieval-Augmented Generation (RAG). Familiar with text preprocessing, semantic search, and
+LLM-based applications. Eager to apply problem-solving and development skills in an entry-level NLP Engineer or
+AI Developer role.
+EDUCATION
+Master of Computer Applications (MCA)
+2025–Present
+JSS Academy of Technical Education, Noida (CGPA 7.09/10)
+Bachelor of Science (B.Sc.),
+2021–2024
+CSJMU, Kanpur (CGPA:8.43/10)
+Senior Secondary (Class XII)
+2020-2021
+Unnao Public Inter College, UP Board (Percentage:81%)
+TECHNICAL SKILLS
+Programming: Python, SQL
+Python Concepts: OOP, Data Structures, Exception Handling, File Handling
+NLP: Text Preprocessing, Tokenization, Stemming, Lemmatization, TF-IDF, Text Classification
+Deep Learning: Neural Networks, LSTM, GRU, Transformer Architecture, BERT
+Machine Learning: Scikit-learn, Classification, Feature Engineering, Model Evaluation
+Generative AI: LLM Fundamentals, Prompt Engineering, RAG, Embeddings, Semantic Search
+Libraries & Frameworks: Pandas, NumPy, NLTK, spaCy, Sentence Transformers, FastAPI, Streamlit
+Database & Tools: MySQL, ChromaDB, Git, GitHub, Jupyter Notebook, VS Code, Streamlit
+PROJECTS
+Smart Resume Intelligence System [GitHub]
+Python, NLP, Sentence Transformers, ChromaDB, RAG
+• Developed an AI-powered resume screening application to extract candidate information and match multiple
+resumes against job descriptions.
+• Implemented PDF parsing, skill extraction, semantic similarity matching, and candidate ranking using NLP
+techniques and Sentence Transformers.
+• Integrated ChromaDB for vector storage and developed an AI Recruiter Assistant for querying resume-related
+information.
+Multilingual Customer Support Ticket Classification System
+Python, NLP, Scikit-learn, SQL, FastAPI
+• Developed an NLP-based application to automatically classify customer support tickets into categories such
+as Payment, Technical, Account, and Delivery.
+• Implemented text preprocessing, TF-IDF vectorization, and machine learning models to predict ticket cate-
+gories and customer sentiment.
+• Integrated SQL for ticket data storage and FastAPI for building REST APIs to support automated ticket
+classification.
