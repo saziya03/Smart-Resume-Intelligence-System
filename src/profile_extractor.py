@@ -15,7 +15,11 @@ PROFILE_DIR = BASE_DIR / "data" / "extracted_profiles"
 
 # Load trained spaCy model
 import spacy
-nlp = spacy.load("en_core_web_sm")
+
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    nlp = spacy.blank("en")
 
 # Extract candidate name using NER
 def extract_name(text):
