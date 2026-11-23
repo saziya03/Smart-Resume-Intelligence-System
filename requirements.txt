@@ -2,9 +2,9 @@
 streamlit
 fastapi
 uvicorn[standard]
-pandas==2.2.3
+pandas==2.3.3
 numpy
-PyMuPD
+PyMuPDF
 scikit-learn
 sentence-transformers
 chromadb
