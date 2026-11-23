@@ -599,7 +599,7 @@ Provide a clear and useful answer:
             return "GEMINI_API_KEY is not set. Add it to your environment variables or Streamlit Secrets."
 
         genai.configure(api_key=api_key)
-        gemini_model = genai.GenerativeModel("gemini-2.5-flash")
+        gemini_model = genai.GenerativeModel("gemini-3.8-flash")
         response = gemini_model.generate_content(
             prompt,
             generation_config={"temperature": 0.4}
